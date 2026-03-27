@@ -293,7 +293,7 @@ c=mix(c,vec3(0.227,0.416,0.541),smoothstep(0.4,1.0,h));c+=(grain(uv,floor(u_time
 vec2 vig=uv*2.0-1.0;c*=(1.0-smoothstep(0.55,1.45,dot(vig,vig)))*0.55+0.45;gl_FragColor=vec4(clamp(c,0.0,1.0),1.0);}`;
 
 const FS_GRASS = `precision highp float; uniform vec2 u_resolution; uniform float u_time; ${NOISE_GLSL}
-float blades(vec2 uv){vec2 buv=uv*vec2(12.0,40.0)+vec2(u_time*0.006,0.0);return smoothstep(0.15,0.35,abs(noise(buv)));}
+float blades(vec2 uv){vec2 buv=uv*vec2(25.0,30.0)+vec2(u_time*0.006,u_time*0.003);mat2 rot=mat2(0.8,0.6,-0.6,0.8);float n1=noise(buv);float n2=noise(rot*buv*1.3+vec2(17.0,31.0));return smoothstep(0.1,0.45,abs(n1*0.6+n2*0.4));}
 float clumps(vec2 uv){return fbm(uv*2.0+vec2(u_time*0.006,u_time*0.0024));}
 float wind(vec2 uv){return sin(uv.x*3.0+uv.y*1.5+u_time*0.04)*0.5+0.5;}
 void main(){vec2 uv=gl_FragCoord.xy/u_resolution;vec2 wuv=uv*vec2(u_resolution.x/u_resolution.y,1.0)*2.5;
