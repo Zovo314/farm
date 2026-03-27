@@ -521,8 +521,7 @@ function updateFarmingSystems(gameDayDelta) {
 function buyAnimal(species, gender) {
   const prices = CONFIG.prices[species];
   const cost = gender === 'male' ? prices[0] : prices[1];
-  if (gameState.money < cost) { showToast('余额不足!'); return; }
-  gameState.money -= cost;
+  // 无限金币模式：不检查余额，不扣钱
 
   const isPond = species === 'duck' || species === 'goose';
   if (isPond) {
@@ -602,7 +601,7 @@ function formatAge(days) {
 
 function updateUI() {
   // money
-  moneyEl.textContent = `💰 ¥${gameState.money}`;
+  moneyEl.textContent = `💰 ∞`;
 
   // date
   const totalMonths = Math.floor(gameState.gameDay / 30);
@@ -687,7 +686,7 @@ function updateToolbarButtons() {
     const gn = btn.dataset.gender;
     const prices = CONFIG.prices[sp];
     const cost = gn === 'male' ? prices[0] : prices[1];
-    btn.classList.toggle('disabled', gameState.money < cost);
+    btn.classList.toggle('disabled', false);
   }
 }
 
